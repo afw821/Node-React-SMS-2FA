@@ -1,0 +1,32 @@
+{
+  "name": "node-react-sms-2fa",
+  "version": "1.0.0",
+  "description": "A simple application with 2FA using SMS messaging with a code to enter",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/afw821/Node-React-SMS-2FA.git"
+  },
+  "keywords": [
+    "Node",
+    "React",
+    "SMS",
+    "Bootstrap",
+    "Authentication",
+    "Autorization"
+  ],
+  "author": "Alex Watkins afw821@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/afw821/Node-React-SMS-2FA/issues"
+  },
+  "homepage": "https://github.com/afw821/Node-React-SMS-2FA#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.17.1",
+    "sequelize": "^6.6.5"
+  }
+}
