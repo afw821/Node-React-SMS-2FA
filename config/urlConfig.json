@@ -1,0 +1,4 @@
+{
+  "appUrl": "http://localhost:3000",
+  "deployedAppUrl": "https://myAppName.herokuapp.com"
+}

@@ -43,22 +43,16 @@ module.exports = function (connection, Sequelize) {
         len: [5, 550],
       },
     },
+    validationCode: {
+      type: Sequelize.INTEGER,
+      validate: {
+        len: [5, 550],
+      },
+    },
     isAdmin: {
       type: Sequelize.INTEGER,
     },
   });
-
-  User.associate = function (models) {
-    // Associating User with Purchases, Reviews
-    // User is parent table to reviews, purchases
-    User.hasMany(models.Purchase, {
-      onDelete: "cascade",
-    });
-
-    User.hasMany(models.Review, {
-      onDelete: "cascade",
-    });
-  };
 
   User.beforeCreate(hashPassword);
 

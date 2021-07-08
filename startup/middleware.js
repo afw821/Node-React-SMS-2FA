@@ -1,6 +1,7 @@
 const path = require("path");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
+const express = require("express");
 require("dotenv").config();
 module.exports = (app) => {
   app.use(cors());
