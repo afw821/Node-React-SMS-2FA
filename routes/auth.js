@@ -4,7 +4,8 @@ const auth = require("../middleware/auth");
 //const authCookie = require("../middleware/authCookie");
 const authController = require("../controllers/authController");
 
-router.post("/", authController.login); //"/api/auth"
+router.post("/firstLevelAuth", authController.firstLevelAuth); //"/api/auth"
+router.post("/secondLevelAuth", authController.secondLevelAuth); //"/api/auth"
 router.post("/isTokenValid", authController.isTokenValid);
 //router.put("/", auth, authController.updatePassword);
 

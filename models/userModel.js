@@ -45,9 +45,9 @@ module.exports = function (connection, Sequelize) {
     },
     validationCode: {
       type: Sequelize.INTEGER,
-      validate: {
-        len: [5, 550],
-      },
+      // validate: {
+      //   len: [5, 550],
+      // },
     },
     isAdmin: {
       type: Sequelize.INTEGER,

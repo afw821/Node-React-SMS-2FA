@@ -76,6 +76,20 @@ const userController = {
       res.json(ex);
     }
   },
+  updateUserValidationCode: async function (req, res) {
+    console.log("req*****", req.dataValues);
+    try {
+      const user = await db.User.update(req.dataValues, {
+        where: {
+          id: req.dataValues.id,
+        },
+      });
+      return user;
+    } catch (error) {
+      console.log("-----Error-----", ex);
+      res.json(ex);
+    }
+  },
   updateUser_forgot_pw: async function (req, res) {
     try {
       const { userId, token } = req.params;

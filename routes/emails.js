@@ -3,7 +3,7 @@ const router = express.Router();
 const emailController = require("../controllers/emailController");
 //router.post("/contact", emailController.contact);
 
-//router.post("/register", emailController.register);
+router.post("/register", emailController.register);
 
 //router.post("/purchase", emailController.purchase);
 

@@ -4,16 +4,18 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const emailController = require("./emailController");
 const { appUrl, deployedAppUrl } = require("../config/urlConfig.json");
+const codeCreator = require("../utils/validationCode");
+const userController = require("./userController");
 const authController = {
-  login: async function (req, res) {
+  firstLevelAuth: async function (req, res) {
     const { userName, password } = req.body;
-
+    console.log(userName);
+    console.log(password);
     try {
       let user = await db.User.findOne({
         where: {
           userName: userName,
         },
-        include: [db.Purchase],
       });
       if (!user)
         return res.status(400).send("Invalid User name and / or password");
@@ -21,20 +23,49 @@ const authController = {
       if (!validPassword)
         return res.status(400).send("Invalid User name and / or password");
 
-      const token = authController.generateAuthToken(user);
-
+      //assign random token to user need to call to update user
+      const validationCode2FA = codeCreator.createValiadtionCode(9, 1);
+      codeCreator.validationCodeArray = [];
+      console.log("****Code****", validationCode2FA);
+      user.validationCode = validationCode2FA;
+      const result = await userController.updateUserValidationCode(user, res); //update user with new validation code
+      console.log("****result****", result);
+      if (!result)
+        res
+          .status(404)
+          .send("Unable to create validation code. Please try again later");
       //res.header("x-auth-token", token).send(token);
 
-      res.cookie("token", token, {
-        expires: new Date(Date.now() + 3600000), //1hr
-        secure: process.env.NODE_ENV === "production",
-      });
-
-      res.json({ token });
+      res.json({ validPassword, user });
     } catch (ex) {
       console.log("-----Error-----", ex);
       res.json(ex);
     }
+  },
+  secondLevelAuth: async function (req, res) {
+    const { validationCode } = req.body;
+    let user = await db.User.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+    if (!user) return res.status(400).send("Can't locate user");
+
+    const isValidationCodeValid = validationCode.compare(
+      validationCode,
+      user.validationCode
+    );
+    if (!isValidationCodeValid)
+      return res.status(400).send("Invalid User name and / or password");
+
+    const token = authController.generateAuthToken(user);
+
+    res.cookie("token", token, {
+      expires: new Date(Date.now() + 3600000), //1hr
+      secure: process.env.NODE_ENV === "production",
+    });
+
+    res.json({ token });
   },
   updatePassword: async function (req, res) {
     try {
