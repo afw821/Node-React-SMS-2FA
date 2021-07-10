@@ -43,29 +43,38 @@ const authController = {
     }
   },
   secondLevelAuth: async function (req, res) {
-    const { validationCode } = req.body;
-    let user = await db.User.findOne({
-      where: {
-        id: req.params.id,
-      },
-    });
-    if (!user) return res.status(400).send("Can't locate user");
+    try {
+      console.log("here");
+      const { validationCode } = req.body;
+      console.log("req.params.id", req.params.id);
+      let user = await db.User.findOne({
+        where: {
+          id: req.params.id,
+        },
+      });
+      console.log("User", user);
+      if (!user) return res.status(400).send("Can't locate user");
 
-    const isValidationCodeValid = validationCode.compare(
-      validationCode,
-      user.validationCode
-    );
-    if (!isValidationCodeValid)
-      return res.status(400).send("Invalid User name and / or password");
+      const isValidationCodeValid = codeCreator.compare(
+        validationCode,
+        user.dataValues.validationCode
+      );
 
-    const token = authController.generateAuthToken(user);
+      console.log("IsCode Valid", isValidationCodeValid);
+      if (!isValidationCodeValid)
+        return res.status(400).send("Invalid User name and / or password");
 
-    res.cookie("token", token, {
-      expires: new Date(Date.now() + 3600000), //1hr
-      secure: process.env.NODE_ENV === "production",
-    });
+      const token = authController.generateAuthToken(user);
 
-    res.json({ token });
+      res.cookie("token", token, {
+        expires: new Date(Date.now() + 3600000), //1hr
+        secure: process.env.NODE_ENV === "production",
+      });
+
+      res.json({ token });
+    } catch (error) {
+      res.json(error);
+    }
   },
   updatePassword: async function (req, res) {
     try {

@@ -5,8 +5,8 @@ const auth = require("../middleware/auth");
 const authController = require("../controllers/authController");
 
 router.post("/firstLevelAuth", authController.firstLevelAuth); //"/api/auth"
-router.post("/secondLevelAuth", authController.secondLevelAuth); //"/api/auth"
+router.post("/secondLevelAuth/:id", authController.secondLevelAuth); //"/api/auth"
 router.post("/isTokenValid", authController.isTokenValid);
-//router.put("/", auth, authController.updatePassword);
+router.put("/", auth, authController.updatePassword);
 
 module.exports = router;
