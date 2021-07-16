@@ -4,6 +4,7 @@ import "./App.css";
 import { ToastContainer, toast } from "react-toastify";
 import ClientRoutes from "./components/Layout/ClientRoutes";
 import NavBar from "./components/Layout/NavBar";
+import { Container, Header, Content, FlexboxGrid, Footer } from "rsuite";
 class App extends Component {
   state = {
     user: {
@@ -19,6 +20,15 @@ class App extends Component {
     clientWidth: document.documentElement.clientWidth,
   };
 
+  handleSetActiveTab = (tab) => {
+    this.setState({ activeTab: tab });
+  };
+
+  displayWindowSize = () => {
+    let clientWidth = document.documentElement.clientWidth;
+    this.setState({ clientWidth });
+  };
+
   // async componentDidMount() {
   //   const user = auth.getCurrentUser();
   //   this.setState({ user });
@@ -28,23 +38,24 @@ class App extends Component {
     window.addEventListener("resize", this.displayWindowSize);
     return (
       <>
-        <ToastContainer autoClose={3000} hideProgressBar />
-        <NavBar
-          //handleSetActiveTab={this.handleSetActiveTab}
-          user={user}
-          activeTab={activeTab}
-        />
-        <div
-          className="container-fluid h100"
-          style={{ backgroundColor: "whitesmoke" }}
-        >
-          <ClientRoutes
-            user={user}
-            clientWidth={clientWidth}
-            activeTab={activeTab}
-          />
-          {/* <Footer clientWidth={clientWidth} /> */}
-        </div>
+        <Container>
+          <Header>
+            <NavBar
+              handleSetActiveTab={this.handleSetActiveTab}
+              user={user}
+              activeTab={activeTab}
+            />
+          </Header>
+          <Content className="h100" style={{ backgroundColor: "#DAE1E8" }}>
+            <ToastContainer autoClose={3000} hideProgressBar />
+            <ClientRoutes
+              user={user}
+              clientWidth={clientWidth}
+              activeTab={activeTab}
+              handleSetActiveTab={this.handleSetActiveTab}
+            />
+          </Content>
+        </Container>
       </>
     );
   }

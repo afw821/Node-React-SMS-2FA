@@ -1,0 +1,4 @@
+{
+  "apiUrl": "http://localhost:3800/api",
+  "deployedApiUrl": "https://myAppName.herokuapp.com/api"
+}

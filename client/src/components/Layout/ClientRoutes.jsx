@@ -1,6 +1,11 @@
 import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import Home from "../Home/Home";
+import LoginForm from "../Login/LoginForm";
+import ForgotPWEmailForm from "../ForgottenPW/ForgotPWEmailForm";
+import ExpiredLink from "../ForgottenPW/ExpiredLink";
+import Logout from "../Logout/Logout";
+import RegisterForm from "../Register/RegisterForm";
 const ClientRoutes = ({
   user,
   clientWidth,
@@ -33,40 +38,40 @@ const ClientRoutes = ({
           clientWidth={clientWidth}
         />
       )}
-    />
+    /> */}
 
-    <Route
-      path="/register"
-      render={(props) => (
-        <RegisterForm
-          {...props}
-          activeTab={activeTab}
-          handleSetActiveTab={handleSetActiveTab}
-          clientWidth={clientWidth}
-        />
-      )}
-    />
-    <Route
-      path="/login"
-      render={(props) => (
-        <LoginForm
-          {...props}
-          activeTab={activeTab}
-          handleSetActiveTab={handleSetActiveTab}
-          clientWidth={clientWidth}
-        />
-      )}
-    />
-    <Route path="/passwordRecovery" component={ForgotPWEmailForm} />
-    <Route path="/expiredLink" component={ExpiredLink} />
-    <Route path="/logout" component={Logout} /> */}
+      <Route
+        path="/register"
+        render={(props) => (
+          <RegisterForm
+            {...props}
+            activeTab={activeTab}
+            handleSetActiveTab={handleSetActiveTab}
+            clientWidth={clientWidth}
+          />
+        )}
+      />
+      <Route
+        path="/login"
+        render={(props) => (
+          <LoginForm
+            {...props}
+            activeTab={activeTab}
+            handleSetActiveTab={handleSetActiveTab}
+            clientWidth={clientWidth}
+          />
+        )}
+      />
+      <Route path="/passwordRecovery" component={ForgotPWEmailForm} />
+      <Route path="/expiredLink" component={ExpiredLink} />
+      <Route path="/logout" component={Logout} />
       <Route
         path="/home"
         render={(props) => (
           <Home
             {...props}
-            //activeTab={activeTab}
-            //handleSetActiveTab={handleSetActiveTab}
+            activeTab={activeTab}
+            handleSetActiveTab={handleSetActiveTab}
             clientWidth={clientWidth}
           />
         )}
