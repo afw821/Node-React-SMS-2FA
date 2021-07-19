@@ -23,7 +23,7 @@ class RegisterForm extends Form {
     firstName: Joi.string().required().min(2).max(50).label("First Name"),
     lastName: Joi.string().required().min(2).max(50).label("Last Name"),
     userName: Joi.string().required().min(2).max(50).label("User Name"),
-    phoneNo: Joi.string().required().min(10).max(10).label("Address2"),
+    phoneNo: Joi.string().required().min(14).max(14).label("Phone No."),
     email: Joi.string().email().required().min(5).max(50).label("Email"),
     firstPassword: Joi.string().required().label("Password"),
     password: Joi.string().required().label("Password"),
@@ -100,7 +100,48 @@ class RegisterForm extends Form {
                   )}
                 </Col>
               </Row>
-
+              <Row>
+                <Col xs={24} sm={24} md={16}>
+                  {this.renderRSInputFormGroupItem(
+                    "User Name",
+                    "avatar",
+                    "text",
+                    "userName",
+                    false
+                  )}
+                </Col>
+              </Row>
+              <Row>
+                <Col xs={24} sm={24} md={16}>
+                  {this.renderRSInputFormGroupItem(
+                    "Phone No.",
+                    "phone",
+                    "text",
+                    "phoneNo",
+                    false
+                  )}
+                </Col>
+              </Row>
+              <Row>
+                <Col xs={24} sm={24} md={8}>
+                  {this.renderRSInputFormGroupItem(
+                    "Password",
+                    "unlock",
+                    "password",
+                    "firstPassword",
+                    false
+                  )}
+                </Col>
+                <Col xs={24} sm={24} md={8}>
+                  {this.renderRSInputFormGroupItem(
+                    "Confirm Password",
+                    "unlock",
+                    "password",
+                    "password",
+                    false
+                  )}
+                </Col>
+              </Row>
               <div className="row">
                 <div className="col-12 d-flex justify-content-center">
                   {this.renderBtn("Submit", "submit", "primary")}

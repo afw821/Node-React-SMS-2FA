@@ -21,8 +21,13 @@ class Form extends Component {
   };
 
   doPasswordsMatch = (password, firstPassword) => {
-    if (firstPassword !== password) return "Passwords must match";
-    else return "Passwords match!";
+    if (firstPassword !== password) {
+      console.log("pw must match");
+      return "Passwords must match";
+    } else {
+      console.log("else");
+      return "Passwords match!";
+    }
   };
 
   validateOnSubmit = () => {
@@ -35,26 +40,85 @@ class Form extends Component {
     return errors;
   };
 
+  isPhoneNumberValid = ({ value: phoneNo }, phoneNumberLength) => {
+    if (0 < phoneNumberLength && phoneNumberLength < 10)
+      return "Full Phone No. Required";
+    else return "";
+  };
+
+  formatPhoneNo = (value) => {
+    // if input value is falsy eg if the user deletes the input, then just return
+    if (!value) return value;
+
+    // clean the input for any non-digit values.
+    const phoneNumber = value.replace(/[^\d]/g, "");
+
+    // phoneNumberLength is used to know when to apply our formatting for the phone number
+    const phoneNoLength = phoneNumber.length;
+    console.log("Phone length", phoneNoLength);
+    // we need to return the value with no formatting if its less then four digits
+    // this is to avoid weird behavior that occurs if you  format the area code to early
+    if (phoneNoLength < 4)
+      return {
+        formatted: phoneNumber,
+        phoneNoLength,
+      };
+
+    // if phoneNoLength is greater than 4 and less the 7 we start to return
+    // the formatted number
+    if (phoneNoLength < 7)
+      return {
+        formatted: `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`,
+        phoneNoLength,
+      };
+    // finally, if the phoneNoLength is greater then seven, we add the last
+    // bit of formatting and return it.
+    const formatted = `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(
+      3,
+      6
+    )}-${phoneNumber.slice(6, 10)}`;
+    return {
+      formatted,
+      phoneNoLength,
+    };
+  };
+
   handleChange = (value, { currentTarget: input }) => {
-    console.log("input.name", input.name);
     const errors = { ...this.state.errors };
     const data = { ...this.state.data };
     switch (input.name) {
       case "password":
+        console.log("Made it to password");
         const firstPassword = data.firstPassword;
+        console.log("firstpw", firstPassword);
         const pwErrorMessage = this.doPasswordsMatch(
           input.value,
           firstPassword
         );
         errors[input.name] = pwErrorMessage;
+
+        data[input.name] = input.value;
+        this.setState({ data, errors });
         break;
       default:
-        const errorMessage = this.validateProperty(input);
-        if (errorMessage) errors[input.name] = errorMessage;
-        else delete errors[input.name];
+        if (input.name === "phoneNo") {
+          const { formatted, phoneNoLength } = this.formatPhoneNo(input.value);
+          //const errorMessage = this.validateProperty(input);
+          const errorMessage = this.isPhoneNumberValid(input, phoneNoLength);
+          if (errorMessage) errors[input.name] = errorMessage;
+          else delete errors[input.name];
+
+          data[input.name] = formatted;
+          this.setState({ data, errors });
+        } else {
+          const errorMessage = this.validateProperty(input);
+          if (errorMessage) errors[input.name] = errorMessage;
+          else delete errors[input.name];
+
+          data[input.name] = input.value;
+          this.setState({ data, errors });
+        }
     }
-    data[input.name] = input.value;
-    this.setState({ data, errors });
   };
 
   validateProperty = ({ name, value }) => {
@@ -203,18 +267,7 @@ class Form extends Component {
     const styles = { width: 300, marginBottom: 10 };
     return (
       <>
-        {/* <MDBInput
-          name={name}
-          value={data[name]}
-          label={label}
-          icon={icon}
-          group
-          type={type}
-          id={name}
-          onChange={this.handleChange}
-        /> */}
         <InputGroup className="mb-3" inside>
-          {/* <ControlLabel>{label}</ControlLabel> */}
           <InputGroup.Addon>
             {" "}
             <Icon icon={icon} />
