@@ -262,6 +262,13 @@ class Form extends Component {
     this.setState({ errors: errorClone });
   };
 
+  returnBgColor = (errors) => {
+    if (errors.password === "Passwords must match") return "pink lighten-4";
+    else if (errors.password === '"Password" is not allowed to be empty')
+      return "pink lighten-4";
+    else return "green lighten-4";
+  };
+
   renderRSInputFormGroupItem(label, icon, type, name, disabled) {
     const { data, errors } = this.state;
     const styles = { width: 300, marginBottom: 10 };
@@ -282,7 +289,17 @@ class Form extends Component {
             placeholder={label}
           />
         </InputGroup>
-        {errors[name] && (
+        {name !== "password" && errors[name] && (
+          <Message
+            closable={true}
+            showIcon
+            title="Error"
+            description={errors[name]}
+            type="error"
+            onClose={() => this.handleDeleteError(name)}
+          />
+        )}
+        {name === "password" && errors[name] && (
           <Message
             closable={true}
             showIcon
