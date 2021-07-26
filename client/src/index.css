@@ -29,3 +29,7 @@ code {
 .input-width {
   width: 315.78px !important;
 }
+
+.warning-width {
+  width: 100px;
+}

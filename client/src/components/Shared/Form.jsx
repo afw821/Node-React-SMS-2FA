@@ -129,6 +129,7 @@ class Form extends Component {
   };
 
   handleSubmit = (e) => {
+    console.log("handle Submit");
     e.preventDefault();
     //error handling
     const errors = this.validateOnSubmit();
@@ -271,7 +272,7 @@ class Form extends Component {
 
   renderRSInputFormGroupItem(label, icon, type, name, disabled) {
     const { data, errors } = this.state;
-    const styles = { width: 300, marginBottom: 10 };
+    const styles = { width: "100px" };
     return (
       <>
         <InputGroup className="mb-3" inside>
@@ -302,10 +303,15 @@ class Form extends Component {
         {name === "password" && errors[name] && (
           <Message
             closable={true}
+            className="alert-success"
             showIcon
-            title="Error"
+            title={
+              errors.password === "Passwords must match" ? "Error" : "Success"
+            }
             description={errors[name]}
-            type="error"
+            type={
+              errors.password === "Passwords must match" ? "error" : "success"
+            }
             onClose={() => this.handleDeleteError(name)}
           />
         )}

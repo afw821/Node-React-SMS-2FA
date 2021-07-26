@@ -4,6 +4,8 @@ import Joi from "joi-browser";
 import { Panel, FlexboxGrid, Form as Wrapper, Row, Col } from "rsuite";
 import Loader from "../Shared/Loader";
 import { toast } from "react-toastify";
+import { register } from "../../services/userService";
+import { sendEmailRegister } from "../../services/emailService";
 class RegisterForm extends Form {
   state = {
     data: {
@@ -32,25 +34,29 @@ class RegisterForm extends Form {
 
   doSubmit = async () => {
     try {
-      //   const { data } = this.state;
-      //   const { handleSetActiveTab } = this.props;
-      //   const user = await register(
-      //     data.firstName,
-      //     data.lastName,
-      //     data.address,
-      //     data.address2,
-      //     data.city,
-      //     data.selectedState,
-      //     data.zipCode,
-      //     data.email,
-      //     data.password,
-      //     data.isAdmin
-      //   );
-      //if (user) {
-      // this.props.history.push("/login");
-      // handleSetActiveTab("Login");
-      // sendEmailRegister(user.email, `${user.firstName} ${user.lastName}`);
-      //}
+      console.log("Do Submit");
+      const { data } = this.state;
+      const { handleSetActiveTab } = this.props;
+      let user = await register(
+        data.firstName,
+        data.lastName,
+        data.userName,
+        data.phoneNo,
+        data.email,
+        data.password,
+        data.isAdmin
+      );
+      if (user.id) {
+        this.props.history.push("/login");
+        console.log("if user", user);
+        //handleSetActiveTab("Login");
+        // await sendEmailRegister(
+        //   user.email,
+        //   `${user.firstName} ${user.lastName}`
+        // );
+      } else {
+        toast.error("There was an unknow error. Please try again later.");
+      }
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         toast.error(ex.response.data);
@@ -68,7 +74,7 @@ class RegisterForm extends Form {
         </div>
         <FlexboxGrid align="bottom" justify="center">
           <Panel className="panel-border" header={<h3>Register</h3>} bordered>
-            <form>
+            <form onSubmit={this.handleSubmit}>
               <Row className="show-grid">
                 <Col xs={24} sm={24} md={8}>
                   {this.renderRSInputFormGroupItem(
