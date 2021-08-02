@@ -6,9 +6,6 @@ const userController = {
     console.log("----------Register User------------------");
     //need to figure out logic for checking if username is registerd too
     const { email, userName } = req.body;
-    console.log("--------email----", email);
-    console.log("--------userName----", userName);
-    console.log("req.body------------", req.body);
     req.body.isAdmin = 0;
     try {
       let user = await db.User.findOne({

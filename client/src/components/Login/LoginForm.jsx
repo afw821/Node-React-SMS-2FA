@@ -1,7 +1,6 @@
 import React from "react";
 import Form from "../Shared/Form";
-import { MDBCard, MDBCardBody, MDBModalFooter } from "mdbreact";
-import { login } from "../../services/authService";
+import { login, getSMSCode } from "../../services/authService";
 import Joi from "joi-browser";
 import { Link } from "react-router-dom";
 import Loader from "../Shared/Loader";
@@ -26,9 +25,14 @@ class LoginForm extends Form {
     try {
       this.setState({ showLoader: true });
       const { data } = this.state;
-      await login(data.username, data.loginPassword);
-
-      window.location = "/products";
+      const { user, validPassword } = await getSMSCode(
+        data.username,
+        data.loginPassword
+      );
+      console.log("ispwvalid", validPassword);
+      console.log("user", user);
+      if (validPassword) window.location = `/authenticate/${user.id}`;
+      //window.location = "/validationCode";
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const errors = { ...this.state.errors };
@@ -48,7 +52,7 @@ class LoginForm extends Form {
         </div>
         <FlexboxGrid align="bottom" justify="center">
           <Panel className="panel-border" header={<h3>Login</h3>} bordered>
-            <form>
+            <form onSubmit={this.handleSubmit}>
               {this.renderRSInputFormGroupItem(
                 "User Name",
                 "avatar",

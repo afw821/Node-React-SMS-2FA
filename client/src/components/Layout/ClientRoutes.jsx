@@ -6,6 +6,8 @@ import ForgotPWEmailForm from "../ForgottenPW/ForgotPWEmailForm";
 import ExpiredLink from "../ForgottenPW/ExpiredLink";
 import Logout from "../Logout/Logout";
 import RegisterForm from "../Register/RegisterForm";
+import ValidationCodeForm from "./../Login/ValidationCodeForm";
+import ProtectedRoute from "../Shared/ProtectedRoute";
 const ClientRoutes = ({
   user,
   clientWidth,
@@ -39,7 +41,17 @@ const ClientRoutes = ({
         />
       )}
     /> */}
-
+      <ProtectedRoute
+        path="/authenticate/:id"
+        exact
+        render={(props) => (
+          <ValidationCodeForm
+            {...props}
+            user={user}
+            clientWidth={clientWidth}
+          />
+        )}
+      />
       <Route
         path="/register"
         render={(props) => (
@@ -53,6 +65,7 @@ const ClientRoutes = ({
       />
       <Route
         path="/login"
+        exact
         render={(props) => (
           <LoginForm
             {...props}

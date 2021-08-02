@@ -6,13 +6,15 @@ const authToken = process.env.AUTH_TOKEN;
 const client = require("twilio")(accountSid, authToken);
 
 const smsController = {
-  sendSMS: async function (req, res) {
+  sendSMS: async function (req, res, user) {
     try {
+      console.log("-----send sms message------", req.body.message);
+      console.log("----send sms user------", user);
       client.messages
         .create({
           body: req.body.message,
           from: "+14704504097",
-          to: "+14042764570",
+          to: user.phoneNo,
         })
         .then((message) => res.json(message))
         .catch((err) => console.log(err));

@@ -6,11 +6,12 @@ const emailController = require("./emailController");
 const { appUrl, deployedAppUrl } = require("../config/urlConfig.json");
 const codeCreator = require("../utils/validationCode");
 const userController = require("./userController");
+const smsController = require("../controllers/smsController");
+const validationCode = require("../utils/validationCode");
 const authController = {
   firstLevelAuth: async function (req, res) {
+    console.log("------first level auth-----");
     const { userName, password } = req.body;
-    console.log(userName);
-    console.log(password);
     try {
       let user = await db.User.findOne({
         where: {
@@ -33,10 +34,13 @@ const authController = {
       if (!result)
         res
           .status(404)
-          .send("Unable to create validation code. Please try again later");
+          .send("There was an issue generating your validation code. Please try again later");
       //res.header("x-auth-token", token).send(token);
-
-      res.json({ validPassword, user });
+      req.body.message = `Hello ${user.firstName}, your validation code is ${validationCode2FA}`;
+      smsController.sendSMS(req,res, user);
+      const token = authController.generateAuthToken(user);
+      console.log("------------token--------", token);
+      res.json({ validPassword, user, token });
     } catch (ex) {
       console.log("-----Error-----", ex);
       res.json(ex);
@@ -62,7 +66,7 @@ const authController = {
 
       console.log("IsCode Valid", isValidationCodeValid);
       if (!isValidationCodeValid)
-        return res.status(400).send("Invalid User name and / or password");
+        return res.status(400).send("Invalid code. Please try again");
 
       const token = authController.generateAuthToken(user);
 

@@ -1,6 +1,6 @@
 import React from "react";
 import Form from "../Shared/Form";
-import { MDBCard, MDBCardBody, MDBModalFooter } from "mdbreact";
+import { Panel, FlexboxGrid, Form as Wrapper } from "rsuite";
 import { login } from "../../services/authService";
 import Joi from "joi-browser";
 import { Link } from "react-router-dom";
@@ -16,8 +16,7 @@ class ValidationCodeForm extends Form {
   };
 
   schema = {
-    username: Joi.string().required().label("Username"),
-    loginPassword: Joi.string().required().label("Password"),
+    validationCode: Joi.string().required().label("SMS Code"),
   };
 
   doSubmit = async () => {
@@ -44,34 +43,35 @@ class ValidationCodeForm extends Form {
             <Loader showLoader={this.state.showLoader} />
           </div>
         </div>
-        <div className="row">
-          <div className="col d-flex justify-content-center mt-3">
-            <MDBCard className="form-width" style={{ marginTop: "100px" }}>
-              <MDBCardBody>
-                <form className="mt-4" onSubmit={this.handleSubmit}>
-                  <p className="h5 text-center mb-4">Log In</p>
-                  <div className="grey-text">
-                    <div className="form-row">
-                      <div className="col">
-                        {this.renderMDBInput(
-                          "Validation Code",
-                          "mobile-alt",
-                          "text",
-                          "validationCode"
-                        )}
-                      </div>
-                    </div>
-                    <div className="row pb-3">
-                      <div className="col">
-                        {this.renderBtn("Login", "primary", "submit")}
-                      </div>
-                    </div>
-                  </div>
-                </form>
-              </MDBCardBody>
-            </MDBCard>
-          </div>
-        </div>
+        <FlexboxGrid align="bottom" justify="center">
+          <Panel
+            className="panel-border"
+            header={<h3>Please enter the verification code:</h3>}
+            bordered
+          >
+            <form onSubmit={this.handleSubmit}>
+              {this.renderRSInputFormGroupItem(
+                "Verification Code",
+                "mobile",
+                "text",
+                "validationCode",
+                false
+              )}
+              <div className="row">
+                <div className="col-12 d-flex justify-content-center">
+                  {this.renderBtn("Submit", "submit", "primary")}
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-12 d-flex justify-content-center">
+                  <p>
+                    <Link to="/passwordRecovery"> Forgotten Password?</Link>
+                  </p>
+                </div>
+              </div>
+            </form>
+          </Panel>
+        </FlexboxGrid>
       </>
     );
   }
