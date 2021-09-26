@@ -9,7 +9,7 @@ import Loader from "../Shared/Loader";
 class ValidationCodeForm extends Form {
   state = {
     data: {
-      validationCode: Number.MIN_VALUE,
+      validationCode: null,
     },
     errors: {},
     showLoader: false,
@@ -23,9 +23,13 @@ class ValidationCodeForm extends Form {
     try {
       this.setState({ showLoader: true });
       const { data } = this.state;
-      await login(data.username, data.loginPassword);
+      console.log("data", data);
 
-      window.location = "/user";
+      const { user } = this.props;
+      console.log("user", user);
+      const result = await login(data.validationCode, user.id);
+      console.log("result from do submit", result);
+      //window.location = "/user";
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const errors = { ...this.state.errors };

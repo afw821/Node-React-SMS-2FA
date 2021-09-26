@@ -48,7 +48,7 @@ const authController = {
   },
   secondLevelAuth: async function (req, res) {
     try {
-      console.log("here");
+      console.log("-----here 2nd Auth------");
       const { validationCode } = req.body;
       console.log("req.params.id", req.params.id);
       let user = await db.User.findOne({

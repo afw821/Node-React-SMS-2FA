@@ -8,17 +8,7 @@ import Logout from "../Logout/Logout";
 import RegisterForm from "../Register/RegisterForm";
 import ValidationCodeForm from "./../Login/ValidationCodeForm";
 import ProtectedRoute from "../Shared/ProtectedRoute";
-const ClientRoutes = ({
-  user,
-  clientWidth,
-  handleRemoveFromCart,
-  handleSetActiveTab,
-  calculateQuantity,
-  totalPrice,
-  productsInCart,
-  handleAddToCart,
-  activeTab,
-}) => {
+const ClientRoutes = ({ user, clientWidth, handleSetActiveTab, activeTab }) => {
   return (
     <Switch>
       {/* <ProtectedRoute
@@ -41,8 +31,8 @@ const ClientRoutes = ({
         />
       )}
     /> */}
-      <ProtectedRoute
-        path="/authenticate/:id"
+      <Route
+        path="/authenticateSMS"
         exact
         render={(props) => (
           <ValidationCodeForm

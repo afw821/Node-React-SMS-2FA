@@ -31,8 +31,10 @@ class LoginForm extends Form {
       );
       console.log("ispwvalid", validPassword);
       console.log("user", user);
-      if (validPassword) window.location = `/authenticate/${user.id}`;
-      //window.location = "/validationCode";
+      //if (validPassword) window.location = `/authenticate/${user.id}`;
+      if (validPassword)
+        //this.props.history.push(`/authenticateSMS`);
+        window.location = "/authenticateSMS";
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const errors = { ...this.state.errors };

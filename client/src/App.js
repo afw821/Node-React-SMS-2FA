@@ -8,12 +8,12 @@ import { Container, Header, Content, FlexboxGrid, Footer } from "rsuite";
 class App extends Component {
   state = {
     user: {
-      id: Number.MIN_VALUE,
+      id: null,
       firstName: "",
       lastName: "",
       userName: "",
       phoneNo: "",
-      validationCode: Number.MIN_VALUE,
+      validationCode: null,
       isAdmin: 0,
     },
     activeTab: "Home",

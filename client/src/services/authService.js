@@ -2,9 +2,9 @@ import http from "./httpService";
 import jwtDecode from "jwt-decode";
 import { apiUrl, deployedApiUrl } from "../config.json";
 
-export async function login(validationCode) {
+export async function login(validationCode, userId) {
   const { data: jwt } = await http.post(
-    apiUrl + "/auth/secondLevelAuth",
+    apiUrl + `/auth/secondLevelAuth/${userId}`,
     {
       validationCode
     },
