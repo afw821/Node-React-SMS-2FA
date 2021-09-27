@@ -4,10 +4,11 @@ const jwt = require("jsonwebtoken");
 const express = require("express");
 require("dotenv").config();
 module.exports = (app) => {
-  app.use(cors());
+  app.use(cors({ origin: true, credentials: true }));
   app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "*");
+    //res.header("Access-Control-Allow-Origin", "*");
+    //res.header("Access-Control-Allow-Headers", "*");
+    res.header("Access-Control-Allow-Origin", req.headers.origin)
     next();
   });
 

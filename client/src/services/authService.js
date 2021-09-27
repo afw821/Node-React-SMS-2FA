@@ -8,7 +8,7 @@ export async function login(validationCode, userId) {
     {
       validationCode
     },
-    //{ withCredentials: true }
+    {withCredentials: true}
   );
   return jwt;
 }
@@ -33,6 +33,7 @@ export async function getSMSCode(userName, password) { //first level auth
   );
   const { user, validPassword, token } = data;
     console.log("service is pw valid", validPassword);
+    console.log("User from get sms code", user);
     sessionStorage.setItem("valid_pw_token", token);
   return{
     user,
@@ -46,7 +47,7 @@ export function logout(cookie) {
   document.cookie = `${cookie}= ; expires = Thu, 01 Jan 1970 00:00:00 GMT`;
 }
 
-export function validateValidPWToken(token) {
+export function decodeToken(token) {
   try {
     console.log("jwt decode", jwtDecode(token));
     return jwtDecode(token);
@@ -54,6 +55,7 @@ export function validateValidPWToken(token) {
     return null;
   }
 }
+
 
 export async function isPwResetUrlStillActive(token, userId) {
   const reqBody = {
@@ -71,6 +73,6 @@ export function getJwt() {
 export default {
   login,
   logout,
-  validateValidPWToken,
+  decodeToken,
   getJwt,
 };

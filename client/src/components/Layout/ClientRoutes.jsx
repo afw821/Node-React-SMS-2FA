@@ -32,7 +32,7 @@ const ClientRoutes = ({ user, clientWidth, handleSetActiveTab, activeTab }) => {
       )}
     /> */}
       <Route
-        path="/authenticateSMS"
+        path="/authenticateSMS/:id"
         exact
         render={(props) => (
           <ValidationCodeForm

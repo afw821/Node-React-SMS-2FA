@@ -8,13 +8,11 @@ const validationCode = {
 
       this.validationCodeArray.push(num);
     } while (i < 6);
-    console.log("***Array***", this.validationCodeArray);
+
     return parseInt(this.validationCodeArray.join(""));
   },
   compare: function (code1, code2) {
-    console.log("code 1", code1);
-    console.log("code 1", code2);
-    return code1 === code2;
+    return parseInt(code1) === parseInt(code2);
   },
 };
 

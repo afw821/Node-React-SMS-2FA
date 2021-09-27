@@ -5,6 +5,7 @@ import { login } from "../../services/authService";
 import Joi from "joi-browser";
 import { Link } from "react-router-dom";
 import Loader from "../Shared/Loader";
+import { decodeToken } from "../../services/authService";
 
 class ValidationCodeForm extends Form {
   state = {
@@ -21,13 +22,14 @@ class ValidationCodeForm extends Form {
 
   doSubmit = async () => {
     try {
+      const token = sessionStorage.getItem("valid_pw_token");
+      console.log("toekn from validaiton code form", token);
+      const { id: userId } = decodeToken(token);
+      console.log("userId validaiton code form", userId);
       this.setState({ showLoader: true });
       const { data } = this.state;
-      console.log("data", data);
 
-      const { user } = this.props;
-      console.log("user", user);
-      const result = await login(data.validationCode, user.id);
+      const result = await login(data.validationCode, userId);
       console.log("result from do submit", result);
       //window.location = "/user";
     } catch (ex) {
