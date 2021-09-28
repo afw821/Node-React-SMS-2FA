@@ -45,6 +45,15 @@ export function logout(cookie) {
   document.cookie = `${cookie}= ; expires = Thu, 01 Jan 1970 00:00:00 GMT`;
 }
 
+export function getTokenFromCookie() {
+  const fullCookie = document.cookie;
+
+  const cookie = fullCookie.replace("AUTH_SESSION_TOKEN=", "");
+
+  return decodeToken(cookie);
+  
+}
+
 export function decodeToken(token) {
   try {
     console.log("jwt decode", jwtDecode(token));

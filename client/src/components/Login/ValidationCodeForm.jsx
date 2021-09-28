@@ -22,17 +22,21 @@ class ValidationCodeForm extends Form {
 
   doSubmit = async () => {
     try {
-      const { token: validPWToken } = this.props;
+      const { token: validPWToken, handleSetValidPwToken } = this.props;
       console.log("toekn from validaiton code form", validPWToken);
       const { id: userId } = decodeToken(validPWToken);
       console.log("userId validaiton code form", userId);
       this.setState({ showLoader: true });
       const { data } = this.state;
+      const { history } = this.props;
 
       const { token: result } = await login(data.validationCode, userId);
       console.log("result from do submit", validPWToken);
       if (result) {
+        //clear valid pw token
+        handleSetValidPwToken(null);
         //go to Landing page
+        history.push(`/userPage/${userId}`);
       }
       //window.location = "/user";
     } catch (ex) {

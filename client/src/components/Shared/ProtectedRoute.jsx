@@ -1,8 +1,8 @@
 import React from "react";
-import auth from "../../services/authService";
+import { getTokenFromCookie } from "../../services/authService";
 import { Route, Redirect } from "react-router-dom";
 
-const ProtectedRouteValidPW = ({
+const ProtectedRoute = ({
   path,
   component: Component,
   render,
@@ -13,8 +13,7 @@ const ProtectedRouteValidPW = ({
     <Route
       {...rest}
       render={(props) => {
-        if (!auth.decodeToken(token)) {
-          console.log("in this if statement");
+        if (!getTokenFromCookie()) {
           return (
             <Redirect
               to={{ pathname: "/login", state: { from: props.location } }}
@@ -28,4 +27,4 @@ const ProtectedRouteValidPW = ({
   );
 };
 
-export default ProtectedRouteValidPW;
+export default ProtectedRoute;

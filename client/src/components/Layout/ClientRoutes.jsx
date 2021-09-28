@@ -8,6 +8,8 @@ import Logout from "../Logout/Logout";
 import RegisterForm from "../Register/RegisterForm";
 import ValidationCodeForm from "./../Login/ValidationCodeForm";
 import ProtectedRouteValidPW from "../Shared/ProtectedRouteValidPW";
+import ProtectedRoute from "../Shared/ProtectedRoute";
+import LandingPage from "./../Home/LandingPage";
 const ClientRoutes = ({
   user,
   clientWidth,
@@ -38,6 +40,13 @@ const ClientRoutes = ({
         />
       )}
     /> */}
+      <ProtectedRoute
+        path="/userPage/:id"
+        exact
+        render={(props) => (
+          <LandingPage {...props} user={user} clientWidth={clientWidth} />
+        )}
+      />
       <ProtectedRouteValidPW
         path="/authenticateSMS/:id"
         token={token}
@@ -48,6 +57,7 @@ const ClientRoutes = ({
             user={user}
             token={token} //valid pw token
             clientWidth={clientWidth}
+            handleSetValidPwToken={handleSetValidPwToken}
           />
         )}
       />
