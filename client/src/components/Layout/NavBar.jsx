@@ -17,6 +17,7 @@ import { Link, NavLink } from "react-router-dom";
 import { Navbar, Nav, Dropdown, Icon } from "rsuite";
 class NavBar extends Component {
   render() {
+    const { user } = this.props;
     return (
       <Navbar>
         <Navbar.Header>
@@ -43,6 +44,17 @@ class NavBar extends Component {
                 Login
               </NavLink>
             </Nav.Item>
+            {user && (
+              <Nav.Item>
+                {" "}
+                <NavLink
+                  style={{ border: "none !important" }}
+                  to={`/userPage/${user.id}`}
+                >
+                  User Page
+                </NavLink>
+              </Nav.Item>
+            )}
           </Nav>
           <Nav pullRight>
             <Nav.Item icon={<Icon icon="cog" />}>Settings</Nav.Item>

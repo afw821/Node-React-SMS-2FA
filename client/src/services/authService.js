@@ -45,7 +45,7 @@ export function logout(cookie) {
   document.cookie = `${cookie}= ; expires = Thu, 01 Jan 1970 00:00:00 GMT`;
 }
 
-export function getTokenFromCookie() {
+export function getTokenFromCookie() {//get the current user
   const fullCookie = document.cookie;
 
   const cookie = fullCookie.replace("AUTH_SESSION_TOKEN=", "");
@@ -82,4 +82,5 @@ export default {
   logout,
   decodeToken,
   getJwt,
+  getTokenFromCookie
 };

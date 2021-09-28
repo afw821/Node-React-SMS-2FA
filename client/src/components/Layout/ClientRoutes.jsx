@@ -17,6 +17,7 @@ const ClientRoutes = ({
   activeTab,
   token,
   handleSetValidPwToken,
+  handleSetUser,
 }) => {
   return (
     <Switch>
@@ -58,6 +59,7 @@ const ClientRoutes = ({
             token={token} //valid pw token
             clientWidth={clientWidth}
             handleSetValidPwToken={handleSetValidPwToken}
+            handleSetUser={handleSetUser}
           />
         )}
       />
