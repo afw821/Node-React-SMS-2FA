@@ -70,7 +70,7 @@ const authController = {
 
       const token = authController.generateAuthToken(user);
 
-      res.cookie("token", token, {
+      res.cookie("AUTH_SESSION_TOKEN", token, {
         expires: new Date(Date.now() + 3600000), //1hr
         secure: process.env.NODE_ENV === "production",
       });

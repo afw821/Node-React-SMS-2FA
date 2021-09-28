@@ -7,8 +7,15 @@ import ExpiredLink from "../ForgottenPW/ExpiredLink";
 import Logout from "../Logout/Logout";
 import RegisterForm from "../Register/RegisterForm";
 import ValidationCodeForm from "./../Login/ValidationCodeForm";
-import ProtectedRoute from "../Shared/ProtectedRoute";
-const ClientRoutes = ({ user, clientWidth, handleSetActiveTab, activeTab }) => {
+import ProtectedRouteValidPW from "../Shared/ProtectedRouteValidPW";
+const ClientRoutes = ({
+  user,
+  clientWidth,
+  handleSetActiveTab,
+  activeTab,
+  token,
+  handleSetValidPwToken,
+}) => {
   return (
     <Switch>
       {/* <ProtectedRoute
@@ -31,13 +38,15 @@ const ClientRoutes = ({ user, clientWidth, handleSetActiveTab, activeTab }) => {
         />
       )}
     /> */}
-      <Route
+      <ProtectedRouteValidPW
         path="/authenticateSMS/:id"
+        token={token}
         exact
         render={(props) => (
           <ValidationCodeForm
             {...props}
             user={user}
+            token={token} //valid pw token
             clientWidth={clientWidth}
           />
         )}
@@ -62,6 +71,7 @@ const ClientRoutes = ({ user, clientWidth, handleSetActiveTab, activeTab }) => {
             activeTab={activeTab}
             handleSetActiveTab={handleSetActiveTab}
             clientWidth={clientWidth}
+            handleSetValidPwToken={handleSetValidPwToken}
           />
         )}
       />

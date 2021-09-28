@@ -22,7 +22,7 @@ export async function login(validationCode, userId) {
 // }
 
 export async function getSMSCode(userName, password) { //first level auth
-  console.log("Get sms");
+
   const { data } = await http.post(
     apiUrl + "/auth/firstLevelAuth",
     {
@@ -32,9 +32,7 @@ export async function getSMSCode(userName, password) { //first level auth
     //{ withCredentials: true }
   );
   const { user, validPassword, token } = data;
-    console.log("service is pw valid", validPassword);
-    console.log("User from get sms code", user);
-    sessionStorage.setItem("valid_pw_token", token);
+    //sessionStorage.setItem("valid_pw_token", token);
   return{
     user,
     validPassword,

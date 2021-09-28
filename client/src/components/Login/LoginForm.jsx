@@ -25,15 +25,14 @@ class LoginForm extends Form {
     try {
       this.setState({ showLoader: true });
       const { data } = this.state;
-      const { user, validPassword } = await getSMSCode(
+      const { history, handleSetValidPwToken } = this.props;
+      const { user, validPassword, token } = await getSMSCode(
         data.username,
         data.loginPassword
       );
-      console.log("ispwvalid", validPassword);
-      console.log("user", user);
-      //if (validPassword) window.location = `/authenticate/${user.id}`;
-      if (validPassword) this.props.history.push(`/authenticateSMS`);
-      //window.location = "/authenticateSMS";
+      handleSetValidPwToken(token);
+      if (validPassword) history.push(`/authenticateSMS/${user.id}`);
+      //window.location = `/authenticateSMS/${user.id}`;
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const errors = { ...this.state.errors };

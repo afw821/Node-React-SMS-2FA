@@ -18,10 +18,15 @@ class App extends Component {
     },
     activeTab: "Home",
     clientWidth: document.documentElement.clientWidth,
+    validPwToken: null
   };
 
   handleSetActiveTab = (tab) => {
     this.setState({ activeTab: tab });
+  };
+
+  handleSetValidPwToken = (validPwToken) => {
+    this.setState({ validPwToken });
   };
 
   displayWindowSize = () => {
@@ -34,7 +39,7 @@ class App extends Component {
   //   this.setState({ user });
   // }
   render() {
-    const { user, activeTab, clientWidth } = this.state;
+    const { user, activeTab, clientWidth, validPwToken } = this.state;
     window.addEventListener("resize", this.displayWindowSize);
     return (
       <>
@@ -53,6 +58,9 @@ class App extends Component {
               clientWidth={clientWidth}
               activeTab={activeTab}
               handleSetActiveTab={this.handleSetActiveTab}
+              token={validPwToken}
+              handleSetValidPwToken={this.handleSetValidPwToken}
+              
             />
           </Content>
         </Container>

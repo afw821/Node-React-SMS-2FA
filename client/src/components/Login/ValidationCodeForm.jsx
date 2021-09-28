@@ -22,20 +22,23 @@ class ValidationCodeForm extends Form {
 
   doSubmit = async () => {
     try {
-      const token = sessionStorage.getItem("valid_pw_token");
-      console.log("toekn from validaiton code form", token);
-      const { id: userId } = decodeToken(token);
+      const { token: validPWToken } = this.props;
+      console.log("toekn from validaiton code form", validPWToken);
+      const { id: userId } = decodeToken(validPWToken);
       console.log("userId validaiton code form", userId);
       this.setState({ showLoader: true });
       const { data } = this.state;
 
-      const result = await login(data.validationCode, userId);
-      console.log("result from do submit", result);
+      const { token: result } = await login(data.validationCode, userId);
+      console.log("result from do submit", validPWToken);
+      if (result) {
+        //go to Landing page
+      }
       //window.location = "/user";
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const errors = { ...this.state.errors };
-        errors.username = ex.response.data;
+        errors.validationCode = ex.response.data;
         this.setState({ errors, showLoader: false });
       }
     }
@@ -66,13 +69,6 @@ class ValidationCodeForm extends Form {
               <div className="row">
                 <div className="col-12 d-flex justify-content-center">
                   {this.renderBtn("Submit", "submit", "primary")}
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-12 d-flex justify-content-center">
-                  <p>
-                    <Link to="/passwordRecovery"> Forgotten Password?</Link>
-                  </p>
                 </div>
               </div>
             </form>
