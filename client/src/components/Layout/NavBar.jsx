@@ -56,9 +56,19 @@ class NavBar extends Component {
               </Nav.Item>
             )}
           </Nav>
-          <Nav pullRight>
+          {user && (
+            <Nav pullRight>
+              <Nav.Item>
+                {" "}
+                <NavLink style={{ border: "none !important" }} to={"/logout"}>
+                  Logout
+                </NavLink>
+              </Nav.Item>
+            </Nav>
+          )}
+          {/* <Nav pullRight>
             <Nav.Item icon={<Icon icon="cog" />}>Settings</Nav.Item>
-          </Nav>
+          </Nav> */}
         </Navbar.Body>
       </Navbar>
     );

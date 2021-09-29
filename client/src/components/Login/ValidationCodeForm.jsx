@@ -40,6 +40,7 @@ class ValidationCodeForm extends Form {
         handleSetValidPwToken(null);
         //go to Landing page
         //window.location = `/userPage/${user.id}`;
+        handleSetUser(user);
         history.push(`/userPage/${user.id}`);
       }
       //window.location = "/user";

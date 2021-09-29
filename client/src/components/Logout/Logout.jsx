@@ -3,7 +3,7 @@ import auth from "../../services/authService";
 
 class Logout extends Component {
   componentDidMount() {
-    auth.logout("token");
+    auth.logout("AUTH_SESSION_TOKEN");
     window.location = "/home";
   }
   render() {
