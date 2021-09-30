@@ -7,6 +7,6 @@ router.post("/register", emailController.register);
 
 //router.post("/purchase", emailController.purchase);
 
-//router.post("/forgotPassword/:email", emailController.sendForgot_pw_email);
+router.post("/forgotPassword/:email", emailController.sendForgot_pw_email);
 
 module.exports = router;

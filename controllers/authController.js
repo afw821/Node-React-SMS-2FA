@@ -185,6 +185,7 @@ const authController = {
     id: userId,
     createdAt,
   }) {
+    console.log("------------use password hash to make token--------");
     const secret = passwordHash + "-" + createdAt;
     const token = jwt.sign({ userId }, secret, {
       expiresIn: 3600, // 1 hour

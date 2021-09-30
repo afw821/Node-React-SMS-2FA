@@ -28,3 +28,7 @@ export function sendEmailPurchase(name, toEmail, html, userId) {
 
   return http.post(apiUrl + "/messages/purchase", data);
 }
+
+export function sendEmailForgotPW(email) {
+  return http.post(apiUrl + `/emails/forgotPassword/${email}`);
+}

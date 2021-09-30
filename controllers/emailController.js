@@ -734,8 +734,8 @@ const emailController = {
         <p>But don’t worry! You can use the following link to reset your password:</p>
         <a href=${url}>${url}</a>
         <p>If you don’t use this link within 1 hour, it will expire.</p>
-        <p>Do something outside today! </p>
-        <p>–Your friends at Al's Outdoor</p>
+        <p>Have a nice day! </p>
+        <p>Buy Bitcoin <a href="www.swanbitcoin.com/AlexWatkins">Here!</a></p>
         `;
 
     return { from, to, subject, html };
@@ -748,6 +748,7 @@ const emailController = {
         pass: process.env.EMAIL_PASSWORD,
       },
     });
+    console.log("---------MADE IT HERE---------------")
     const token = authController.usePasswordHashToMakeToken(user);
     const url = authController.getPasswordResetURL(user, token);
     const mailOptions = emailController.renderResetPasswordHtml(user, url);
