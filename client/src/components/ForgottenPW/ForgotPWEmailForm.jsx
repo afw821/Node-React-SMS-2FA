@@ -20,23 +20,24 @@ class ForgotPWEmailForm extends Form {
 
   doSubmit = async () => {
     try {
-      this.setState({ showLoader: true });
       const { data, errors } = this.state;
 
       const { data: result } = await sendEmailForgotPW(data.email);
-
+      const { completed } = result;
       console.log("result from submit to forgotten password", result);
-
-      this.setState({
-        data: {
-          email: "",
-        },
-        submitted: true,
-      });
+      if (result) {
+        this.setState({
+          data: {
+            email: "",
+          },
+          submitted: true,
+        });
+      }
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const errors = { ...this.state.errors };
 
+        errors.email = ex.response.status;
         this.setState({ errors });
       }
     }
@@ -48,9 +49,17 @@ class ForgotPWEmailForm extends Form {
       return (
         <div className="row">
           <div className="col d-flex justify-content-center mt-3">
-            <Panel className="form-width" style={{ marginTop: "100px" }}>
-              If that account is in our system, we will email you a link to
-              reset your password.
+            <Panel
+              className="form-width panel-border"
+              bordered
+              style={{ marginTop: "100px" }}
+            >
+              <p>
+                <strong>
+                  If that account is in our system, we will email you a link to
+                  reset your password.
+                </strong>
+              </p>
             </Panel>
           </div>
         </div>

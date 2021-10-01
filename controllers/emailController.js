@@ -1,26 +1,11 @@
 const nodemailer = require("nodemailer");
+const db = require("../models");
 require("dotenv").config();
+const jwt = require("jsonwebtoken");
 const authController = require("./authController");
+const { appUrl, deployedAppUrl } = require("../config/urlConfig.json");
 const emailController = {
   //route handlers
-  contact: async function (req, res) {
-    try {
-      const { email, name, message, subject } = req.body;
-      const result = await emailController.sendEmailContact(
-        email,
-        message,
-        name,
-        subject
-      );
-      if (!result)
-        res.status(400).send({ sent: false, message: "Error Sending Message" });
-
-      res.send({ sent: true, message: "Message sent successfully" });
-    } catch (ex) {
-      console.log("-----Error-----", ex);
-      res.json(ex);
-    }
-  },
   register: async function (req, res) {
     try {
       const { fromEmail, name } = req.body;
@@ -34,99 +19,6 @@ const emailController = {
       console.log("-----Error-----", ex);
       res.json(ex);
     }
-  },
-  purchase: async function (req, res) {
-    try {
-      const { user, stripePaymentId, purchases } = req.body;
-      const result = await emailController.sendEmailPurchase(
-        user, // type {}
-        stripePaymentId, // type ""
-        purchases //type [{}] array of purchase objects
-      );
-
-      if (!result)
-        res.status(400).send({ sent: false, message: "Error Sending Message" });
-
-      res.send({ sent: true, message: "Message sent successfully" });
-    } catch (ex) {
-      console.log("-----Error-----", ex);
-      res.json(ex);
-    }
-  },
-  //helper functions
-  sendEmailPurchase: function (user, stripePaymentId, array) {
-    const { firstName, lastName, email: toEmail, id: userId } = user;
-
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_ADDRESS,
-        pass: process.env.EMAIL_PASSWORD,
-      },
-    });
-
-    const maillist = [toEmail, "afw821@gmail.com"];
-
-    maillist.forEach((to, i, arr) => {
-      var mailOptions = {
-        from: "afw821@gmail.com",
-        to: to,
-        subject:
-          to === "afw821@gmail.com"
-            ? `${firstName + " " + userId} purchase`
-            : `${firstName} here is your purchase information`,
-        html: this.renderPurchaseHtml(
-          array,
-          lastName,
-          firstName,
-          stripePaymentId
-        ),
-      };
-
-      transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-          console.log("-------------transporter error-----------------", error);
-          return false;
-        } else {
-          console.log(
-            "-----------------Email sent:--------------------- " + info.response
-          );
-          return true;
-        }
-      });
-    });
-
-    return true;
-  },
-  sendEmailContact: function (fromEmail, message, name, subject) {
-    console.log("--------------Send Email Contact---------------");
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_ADDRESS,
-        pass: process.env.EMAIL_PASSWORD,
-      },
-    });
-
-    var mailOptions = {
-      from: fromEmail,
-      to: "afw821@gmail.com",
-      subject: `From:${name}`,
-      html: this.renderContactHtml(fromEmail, message, name, subject),
-    };
-
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.log("-------------transporter error-----------------", error);
-        return false;
-      } else {
-        console.log(
-          "-----------------Email sent:--------------------- " + info.response
-        );
-      }
-    });
-
-    return true;
   },
   sendEmailRegister: function (fromEmail, name) {
     const transporter = nodemailer.createTransport({
@@ -740,31 +632,65 @@ const emailController = {
 
     return { from, to, subject, html };
   },
-  sendForgot_pw_email: function (user) {
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_ADDRESS,
-        pass: process.env.EMAIL_PASSWORD,
-      },
-    });
-    console.log("---------MADE IT HERE---------------")
-    const token = authController.usePasswordHashToMakeToken(user);
-    const url = authController.getPasswordResetURL(user, token);
-    const mailOptions = emailController.renderResetPasswordHtml(user, url);
+  sendForgot_pw_email: async function (req,res) {
+    try {
+      const { email } = req.params;
 
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.log("-------------transporter error-----------------", error);
-        return false;
-      } else {
-        console.log(
-          "-----------------Email sent:--------------------- " + info.response
-        );
-      }
+      let { dataValues: user } = await db.User.findOne({
+        where: {
+          email: email,
+        },
+      });
+  
+      if (!user)
+        return res.status(400).send("No user with theat email is registered");
+      console.log("-----------user---------", user);
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.EMAIL_ADDRESS,
+          pass: process.env.EMAIL_PASSWORD,
+        },
+      });
+      console.log("---------MADE IT HERE---------------")
+      
+      const token = emailController.usePasswordHashToMakeToken(user);
+      const url = emailController.getPasswordResetURL(user, token);
+      const mailOptions = emailController.renderResetPasswordHtml(user, url);
+  
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          console.log("-------------transporter error-----------------", error);
+          return false;
+        } else {
+          console.log(
+            "-----------------Email sent:--------------------- " + info.response
+          );
+        }
+      });
+      
+      res.json({completed: true});
+    } catch (ex) {
+      console.log("-----Error-----", ex);
+      res.json(ex);
+    }
+
+  },
+  usePasswordHashToMakeToken: function ({
+    password: passwordHash,
+    id: userId,
+    createdAt,
+  }) {
+    console.log("------------use password hash to make token--------");
+    const secret = passwordHash + "-" + createdAt;
+    const token = jwt.sign({ userId }, secret, {
+      expiresIn: 3600, // 1 hour
     });
 
-    return true;
+    return token;
+  },
+  getPasswordResetURL: function (user, token) {
+    return `${appUrl}/${user.id}/${token}`;
   },
 };
 

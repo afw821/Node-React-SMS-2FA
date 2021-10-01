@@ -180,22 +180,22 @@ const authController = {
       res.json(ex);
     }
   },
-  usePasswordHashToMakeToken: function ({
-    password: passwordHash,
-    id: userId,
-    createdAt,
-  }) {
-    console.log("------------use password hash to make token--------");
-    const secret = passwordHash + "-" + createdAt;
-    const token = jwt.sign({ userId }, secret, {
-      expiresIn: 3600, // 1 hour
-    });
+  // usePasswordHashToMakeToken: function ({
+  //   password: passwordHash,
+  //   id: userId,
+  //   createdAt,
+  // }) {
+  //   console.log("------------use password hash to make token--------");
+  //   const secret = passwordHash + "-" + createdAt;
+  //   const token = jwt.sign({ userId }, secret, {
+  //     expiresIn: 3600, // 1 hour
+  //   });
 
-    return token;
-  },
-  getPasswordResetURL: function (user, token) {
-    return `${deployedAppUrl}/${user.id}/${token}`;
-  },
+  //   return token;
+  // },
+  // getPasswordResetURL: function (user, token) {
+  //   return `${deployedAppUrl}/${user.id}/${token}`;
+  // },
 };
 
 module.exports = authController;
