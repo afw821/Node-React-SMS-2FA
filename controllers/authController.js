@@ -153,6 +153,7 @@ const authController = {
       const decoded = jwt.verify(token, secret);
 
       if (decoded.userId == userId) res.json({ isTokenValid: true });
+      else res.json({ isTokenValid: false });
     } catch (ex) {
       if (ex) res.json({ ex, isTokenValid: false });
     }

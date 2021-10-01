@@ -8,6 +8,7 @@ import Logout from "../Logout/Logout";
 import RegisterForm from "../Register/RegisterForm";
 import ValidationCodeForm from "./../Login/ValidationCodeForm";
 import ProtectedRouteValidPW from "../Shared/ProtectedRouteValidPW";
+import UpdateForgottenPWForm from "../ForgottenPW/UpdateForgottenPWForm";
 import ProtectedRoute from "../Shared/ProtectedRoute";
 import LandingPage from "./../Home/LandingPage";
 const ClientRoutes = ({
@@ -21,26 +22,18 @@ const ClientRoutes = ({
 }) => {
   return (
     <Switch>
-      {/* <ProtectedRoute
-      path="/updatePassword/:id"
-      exact
-      render={(props) => (
-        <UpdatePassword {...props} user={user} clientWidth={clientWidth} />
-      )}
-    />
-
-    <Route
-      path="/:userId/:token"
-      exact
-      render={(props) => (
-        <UpdateForgottenPWForm
-          {...props}
-          user={user}
-          handleSetActiveTab={handleSetActiveTab}
-          clientWidth={clientWidth}
-        />
-      )}
-    /> */}
+      <Route
+        path="/:userId/:token"
+        exact
+        render={(props) => (
+          <UpdateForgottenPWForm
+            {...props}
+            user={user}
+            handleSetActiveTab={handleSetActiveTab}
+            clientWidth={clientWidth}
+          />
+        )}
+      />
       <ProtectedRoute
         path="/userPage/:id"
         exact

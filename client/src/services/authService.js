@@ -70,6 +70,7 @@ export async function isPwResetUrlStillActive(token, userId) {
     userId: userId,
   };
   const { data } = await http.post(apiUrl + "/auth/isTokenValid", reqBody);
+  console.log("is token valid service data", data);
   return data.isTokenValid;
 }
 
