@@ -7,7 +7,7 @@ const client = require("twilio")(accountSid, authToken);
 
 const smsController = {
   sendSMS: async function (req, res, user) {
-    try {
+
       console.log("-----send sms message------", req.body.message);
       console.log("----send sms user------", user);
       client.messages
@@ -17,8 +17,8 @@ const smsController = {
           to: user.phoneNo,
         })
         .then((message) => res.json(message))
-        .catch((err) => console.log(err));
-    } catch (ex) {}
+        .catch((err) => res.json(err));
+
   },
 };
 

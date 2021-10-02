@@ -10,7 +10,6 @@ const smsController = require("../controllers/smsController");
 const validationCode = require("../utils/validationCode");
 const authController = {
   firstLevelAuth: async function (req, res) {
-    console.log("------first level auth-----");
     const { userName, password } = req.body;
     try {
       let user = await db.User.findOne({
@@ -27,10 +26,8 @@ const authController = {
       //assign random token to user need to call to update user
       const validationCode2FA = codeCreator.createValiadtionCode(9, 1);
       codeCreator.validationCodeArray = [];
-      console.log("****Code****", validationCode2FA);
       user.validationCode = validationCode2FA;
       const result = await userController.updateUserValidationCode(user, res); //update user with new validation code
-      console.log("****result****", result);
       if (!result)
         res
           .status(404)
@@ -39,7 +36,6 @@ const authController = {
       req.body.message = `Hello ${user.firstName}, your validation code is ${validationCode2FA}`;
       smsController.sendSMS(req,res, user);
       const token = authController.generateAuthToken(user);
-      console.log("------------token--------", token);
       res.json({ validPassword, user, token });
     } catch (ex) {
       console.log("-----Error-----", ex);
@@ -48,15 +44,15 @@ const authController = {
   },
   secondLevelAuth: async function (req, res) {
     try {
-      console.log("-----here 2nd Auth------");
+
       const { validationCode } = req.body;
-      console.log("req.params.id", req.params.id);
+
       let user = await db.User.findOne({
         where: {
           id: req.params.id,
         },
       });
-      console.log("User", user);
+
       if (!user) return res.status(400).send("Can't locate user");
 
       const isValidationCodeValid = codeCreator.compare(
@@ -64,7 +60,6 @@ const authController = {
         user.dataValues.validationCode
       );
 
-      console.log("IsCode Valid", isValidationCodeValid);
       if (!isValidationCodeValid)
         return res.status(400).send("Invalid code. Please try again");
 
@@ -181,22 +176,57 @@ const authController = {
       res.json(ex);
     }
   },
-  // usePasswordHashToMakeToken: function ({
-  //   password: passwordHash,
-  //   id: userId,
-  //   createdAt,
-  // }) {
-  //   console.log("------------use password hash to make token--------");
-  //   const secret = passwordHash + "-" + createdAt;
-  //   const token = jwt.sign({ userId }, secret, {
-  //     expiresIn: 3600, // 1 hour
-  //   });
-
-  //   return token;
-  // },
-  // getPasswordResetURL: function (user, token) {
-  //   return `${deployedAppUrl}/${user.id}/${token}`;
-  // },
+  updateForgetPw: async function (req,res) {
+    try {
+      const { userId, token } = req.params;
+      const { password } = req.body;
+  
+      let userEntity = await db.User.findOne({
+        where: {
+          id: userId,
+        },
+      });
+      if (!userEntity) return res.status(400).send("Unable to find user");
+      //else update the user w/ req.body.password
+  
+      const secret = userEntity.password + "-" + userEntity.createdAt;
+      const payload = jwt.decode(token, secret);
+      if (payload.userId === userEntity.id) {
+        const salt = await bcrypt.genSalt(10);
+        const newHashPw = await bcrypt.hash(password, salt);
+  
+        const updatedUser = {
+          firstName: userEntity.firstName,
+          lastName: userEntity.lastName,
+          address: userEntity.address,
+          address2: userEntity.address2,
+          city: userEntity.city,
+          state: userEntity.state,
+          zipCode: userEntity.zipCode,
+          email: userEntity.email,
+          password: newHashPw,
+          isAdmin: userEntity.isAdmin,
+        };
+  
+        const result = await db.User.update(updatedUser, {
+          where: {
+            id: userId,
+          },
+        });
+  
+        res.json({ result, complete: true });
+      } else {
+        res
+          .status(400)
+          .json({ message: "Unable to decode JWT and change password" });
+      }
+    } catch (error) {
+      
+    }
+  },
+  getPasswordResetURL: function (user, token) {
+    return `${deployedAppUrl}/${user.id}/${token}`;
+  },
 };
 
 module.exports = authController;
