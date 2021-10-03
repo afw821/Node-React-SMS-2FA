@@ -7,6 +7,7 @@ export function updateForgetPw(userId, token, newPassword) {
     token: token,
     password: newPassword,
   };
+  console.log("request body from pw service", reqBody);
   const result = http.put(
     apiUrl + `/forgotPassword/${userId}/${token}`,
     reqBody
