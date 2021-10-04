@@ -178,6 +178,7 @@ const authController = {
   },
   updateForgetPw: async function (req,res) {
     try {
+      console.log("made it here updateForgot pw");
       const { userId, token } = req.params;
       const { password } = req.body;
   
