@@ -90,13 +90,6 @@ class ForgotPWEmailForm extends Form {
                     {this.renderBtn("Submit", "submit", "primary")}
                   </div>
                 </div>
-                <div className="row">
-                  <div className="col-12 d-flex justify-content-center">
-                    <p>
-                      <Link to="/login"> Forgotten Password?</Link>
-                    </p>
-                  </div>
-                </div>
               </form>
             </Panel>
           </FlexboxGrid>

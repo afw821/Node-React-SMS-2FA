@@ -38,12 +38,15 @@ class NavBar extends Component {
                 Sign Up
               </NavLink>
             </Nav.Item>
-            <Nav.Item>
-              {" "}
-              <NavLink style={{ border: "none !important" }} to="/login">
-                Login
-              </NavLink>
-            </Nav.Item>
+            {!user && (
+              <Nav.Item>
+                {" "}
+                <NavLink style={{ border: "none !important" }} to="/login">
+                  Login
+                </NavLink>
+              </Nav.Item>
+            )}
+
             {user && (
               <Nav.Item>
                 {" "}

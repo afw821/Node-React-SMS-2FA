@@ -6,9 +6,9 @@ export async function login(validationCode, userId) {
   const { data: jwt } = await http.post(
     apiUrl + `/auth/secondLevelAuth/${userId}`,
     {
-      validationCode
+      validationCode,
     },
-    {withCredentials: true}
+    { withCredentials: true }
   );
   return jwt;
 }
@@ -21,23 +21,25 @@ export async function login(validationCode, userId) {
 //   sessionStorage.setItem("token", jwt);
 // }
 
-export async function getSMSCode(userName, password) { //first level auth
+export async function getSMSCode(userName, password) {
+  //first level auth
 
   const { data } = await http.post(
     apiUrl + "/auth/firstLevelAuth",
     {
       userName,
       password,
-    },
+    }
     //{ withCredentials: true }
   );
   const { user, validPassword, token } = data;
-    //sessionStorage.setItem("valid_pw_token", token);
-  return{
+  console.log("data from get sms res", data);
+  //sessionStorage.setItem("valid_pw_token", token);
+  return {
     user,
     validPassword,
-    token
-  }
+    token,
+  };
 }
 
 export function logout(cookie) {
@@ -45,13 +47,13 @@ export function logout(cookie) {
   document.cookie = `${cookie}= ; expires = Thu, 01 Jan 1970 00:00:00 GMT`;
 }
 
-export function getTokenFromCookie() {//get the current user
+export function getTokenFromCookie() {
+  //get the current user
   const fullCookie = document.cookie;
 
   const cookie = fullCookie.replace("AUTH_SESSION_TOKEN=", "");
 
   return decodeToken(cookie);
-  
 }
 
 export function decodeToken(token) {
@@ -62,7 +64,6 @@ export function decodeToken(token) {
     return null;
   }
 }
-
 
 export async function isPwResetUrlStillActive(token, userId) {
   const reqBody = {
@@ -83,5 +84,5 @@ export default {
   logout,
   decodeToken,
   getJwt,
-  getTokenFromCookie
+  getTokenFromCookie,
 };

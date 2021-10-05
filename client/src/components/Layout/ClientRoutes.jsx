@@ -22,25 +22,6 @@ const ClientRoutes = ({
 }) => {
   return (
     <Switch>
-      <Route
-        path="/:userId/:token"
-        exact
-        render={(props) => (
-          <UpdateForgottenPWForm
-            {...props}
-            user={user}
-            handleSetActiveTab={handleSetActiveTab}
-            clientWidth={clientWidth}
-          />
-        )}
-      />
-      <ProtectedRoute
-        path="/userPage/:id"
-        exact
-        render={(props) => (
-          <LandingPage {...props} user={user} clientWidth={clientWidth} />
-        )}
-      />
       <ProtectedRouteValidPW
         path="/authenticateSMS/:id"
         token={token}
@@ -56,6 +37,26 @@ const ClientRoutes = ({
           />
         )}
       />
+      <ProtectedRoute
+        path="/userPage/:id"
+        exact
+        render={(props) => (
+          <LandingPage {...props} user={user} clientWidth={clientWidth} />
+        )}
+      />
+      <Route
+        path="/:userId/:token"
+        exact
+        render={(props) => (
+          <UpdateForgottenPWForm
+            {...props}
+            user={user}
+            handleSetActiveTab={handleSetActiveTab}
+            clientWidth={clientWidth}
+          />
+        )}
+      />
+
       <Route
         path="/register"
         render={(props) => (

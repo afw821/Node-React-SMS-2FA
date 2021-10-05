@@ -14,7 +14,6 @@ const ProtectedRouteValidPW = ({
       {...rest}
       render={(props) => {
         if (!auth.decodeToken(token)) {
-          console.log("in this if statement");
           return (
             <Redirect
               to={{ pathname: "/login", state: { from: props.location } }}

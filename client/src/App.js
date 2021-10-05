@@ -18,15 +18,13 @@ class App extends Component {
     },
     activeTab: "Home",
     clientWidth: document.documentElement.clientWidth,
-    validPwToken: null
+    validPwToken: null,
   };
 
   componentDidMount() {
-    
-      const user = auth.getTokenFromCookie();
-  
-      this.setState({ user });
-    
+    const user = auth.getTokenFromCookie();
+
+    this.setState({ user });
   }
 
   handleSetActiveTab = (tab) => {
@@ -38,6 +36,7 @@ class App extends Component {
   };
 
   handleSetValidPwToken = (validPwToken) => {
+    console.log("valid pw token from app.js", validPwToken);
     this.setState({ validPwToken });
   };
 
@@ -73,7 +72,6 @@ class App extends Component {
               token={validPwToken}
               handleSetValidPwToken={this.handleSetValidPwToken}
               handleSetUser={this.handleSetUser}
-              
             />
           </Content>
         </Container>

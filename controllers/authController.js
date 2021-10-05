@@ -11,6 +11,7 @@ const validationCode = require("../utils/validationCode");
 const authController = {
   firstLevelAuth: async function (req, res) {
     const { userName, password } = req.body;
+
     try {
       let user = await db.User.findOne({
         where: {
@@ -25,17 +26,22 @@ const authController = {
 
       //assign random token to user need to call to update user
       const validationCode2FA = codeCreator.createValiadtionCode(9, 1);
+
       codeCreator.validationCodeArray = [];
       user.validationCode = validationCode2FA;
       const result = await userController.updateUserValidationCode(user, res); //update user with new validation code
+
       if (!result)
         res
           .status(404)
-          .send("There was an issue generating your validation code. Please try again later");
+          .send(
+            "There was an issue generating your validation code. Please try again later"
+          );
       //res.header("x-auth-token", token).send(token);
       req.body.message = `Hello ${user.firstName}, your validation code is ${validationCode2FA}`;
-      smsController.sendSMS(req,res, user);
+      smsController.sendSMS(req, res, user);
       const token = authController.generateAuthToken(user);
+
       res.json({ validPassword, user, token });
     } catch (ex) {
       console.log("-----Error-----", ex);
@@ -44,7 +50,6 @@ const authController = {
   },
   secondLevelAuth: async function (req, res) {
     try {
-
       const { validationCode } = req.body;
 
       let user = await db.User.findOne({
@@ -176,12 +181,12 @@ const authController = {
       res.json(ex);
     }
   },
-  updateForgetPw: async function (req,res) {
+  updateForgetPw: async function (req, res) {
     try {
       console.log("made it here updateForgot pw");
       const { userId, token } = req.params;
       const { password } = req.body;
-  
+
       let userEntity = await db.User.findOne({
         where: {
           id: userId,
@@ -189,13 +194,13 @@ const authController = {
       });
       if (!userEntity) return res.status(400).send("Unable to find user");
       //else update the user w/ req.body.password
-  
+
       const secret = userEntity.password + "-" + userEntity.createdAt;
       const payload = jwt.decode(token, secret);
       if (payload.userId === userEntity.id) {
         const salt = await bcrypt.genSalt(10);
         const newHashPw = await bcrypt.hash(password, salt);
-  
+
         const updatedUser = {
           firstName: userEntity.firstName,
           lastName: userEntity.lastName,
@@ -208,22 +213,20 @@ const authController = {
           password: newHashPw,
           isAdmin: userEntity.isAdmin,
         };
-  
+
         const result = await db.User.update(updatedUser, {
           where: {
             id: userId,
           },
         });
-  
+
         res.json({ result, complete: true });
       } else {
         res
           .status(400)
           .json({ message: "Unable to decode JWT and change password" });
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   },
   getPasswordResetURL: function (user, token) {
     return `${deployedAppUrl}/${user.id}/${token}`;
