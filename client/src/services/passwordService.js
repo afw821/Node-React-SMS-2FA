@@ -3,7 +3,7 @@ import { apiUrl, deployedApiUrl } from "../config.json";
 
 export function updateForgetPw(userId, token, newPassword) {
   const reqBody = {
-    userId: userId,
+    userId: parseInt(userId),
     token: token,
     password: newPassword,
   };

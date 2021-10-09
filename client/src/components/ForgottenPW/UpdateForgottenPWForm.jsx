@@ -31,7 +31,8 @@ class UpdateForgottenPWForm extends Form {
 
   doSubmit = async () => {
     const { token, userId } = this.props.match.params;
-
+    console.log("token----", token);
+    console.log("userId----", userId);
     try {
       this.setState({ showLoader: true });
       const { data, errors } = this.state;
@@ -92,13 +93,6 @@ class UpdateForgottenPWForm extends Form {
                   {this.renderBtn("Submit", "submit", "primary")}
                 </div>
               </div>
-              {/* <div className="row">
-                <div className="col-12 d-flex justify-content-center">
-                  <p>
-                    <Link to="/login"> Forgotten Password?</Link>
-                  </p>
-                </div>
-              </div> */}
             </form>
           </Panel>
         </FlexboxGrid>

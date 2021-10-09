@@ -6,17 +6,23 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
-    "axios": "^0.21.1",
+    "axios": "^0.21.4",
     "bootstrap": "^5.0.2",
     "joi-browser": "^13.4.0",
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",
     "mdbreact": "^4.26.1",
+    "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-redux": "^7.2.5",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.3",
+    "react-scripts": "^4.0.3",
     "react-toastify": "^7.0.4",
+    "redux": "^4.1.1",
+    "redux-immutable-state-invariant": "^2.1.0",
+    "redux-thunk": "^2.3.0",
+    "reselect": "^4.0.0",
     "rsuite": "^4.10.2",
     "web-vitals": "^1.1.2"
   },
@@ -26,6 +32,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "proxy": "http://localhost:3800",
   "eslintConfig": {
     "extends": [
       "react-app",
