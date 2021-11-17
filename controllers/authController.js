@@ -184,8 +184,8 @@ const authController = {
   updateForgetPw: async function (req, res) {
     try {
       console.log("made it here updateForgot pw");
-      const { userId, token } = req.params;
-      const { password } = req.body;
+      const { userId } = req.params;
+      const { password, token } = req.body;
 
       let userEntity = await db.User.findOne({
         where: {
@@ -194,7 +194,7 @@ const authController = {
       });
       if (!userEntity) return res.status(400).send("Unable to find user");
       //else update the user w/ req.body.password
-
+      console.log("----user entity---", userEntity);
       const secret = userEntity.password + "-" + userEntity.createdAt;
       const payload = jwt.decode(token, secret);
       if (payload.userId === userEntity.id) {
