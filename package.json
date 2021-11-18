@@ -7,6 +7,9 @@
     "start": "node server.js",
     "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
   },
+  "engines": {
+    "node": "12.13.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/afw821/Node-React-SMS-2FA.git"
