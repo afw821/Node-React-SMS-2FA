@@ -8,8 +8,6 @@ const client = require("twilio")(accountSid, authToken);
 const smsController = {
   sendSMS: async function (req, res, user) {
 
-      console.log("-----send sms message------", req.body.message);
-      console.log("----send sms user------", user);
       client.messages
         .create({
           body: req.body.message,

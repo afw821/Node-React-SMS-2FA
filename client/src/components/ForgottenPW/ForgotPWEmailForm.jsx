@@ -24,7 +24,7 @@ class ForgotPWEmailForm extends Form {
 
       const { data: result } = await sendEmailForgotPW(data.email);
       const { completed } = result;
-      console.log("result from submit to forgotten password", result);
+
       if (result) {
         this.setState({
           data: {

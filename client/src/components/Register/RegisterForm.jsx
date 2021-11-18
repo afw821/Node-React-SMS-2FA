@@ -34,7 +34,6 @@ class RegisterForm extends Form {
 
   doSubmit = async () => {
     try {
-      console.log("Do Submit");
       const { data } = this.state;
       const { handleSetActiveTab } = this.props;
       let user = await register(
@@ -48,7 +47,7 @@ class RegisterForm extends Form {
       );
       if (user.id) {
         this.props.history.push("/login");
-        console.log("if user", user);
+
         //handleSetActiveTab("Login");
         // await sendEmailRegister(
         //   user.email,

@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const userController = {
   registerUser: async function (req, res) {
-    console.log("----------Register User------------------");
+
     //need to figure out logic for checking if username is registerd too
     const { email, userName } = req.body;
     req.body.isAdmin = 0;
@@ -30,7 +30,7 @@ const userController = {
       const newUser = await db.User.create(req.body);
       res.json(newUser);
     } catch (ex) {
-      console.log("-----Error-----", ex);
+    
       res.json(ex);
     }
   },
@@ -46,7 +46,7 @@ const userController = {
 
       res.json(users);
     } catch (ex) {
-      console.log("-----Error-----", ex);
+    
       res.json(ex);
     }
   },
@@ -58,7 +58,7 @@ const userController = {
 
       res.json(users);
     } catch (error) {
-      console.log("-----Error-----", ex);
+  
       res.json(ex);
     }
   },
@@ -72,12 +72,12 @@ const userController = {
       });
       res.json(user);
     } catch (error) {
-      console.log("-----Error-----", ex);
+   
       res.json(ex);
     }
   },
   updateUserValidationCode: async function (req, res) {
-    console.log("req*****", req.dataValues);
+  
     try {
       const user = await db.User.update(req.dataValues, {
         where: {
@@ -86,7 +86,7 @@ const userController = {
       });
       return user;
     } catch (error) {
-      console.log("-----Error-----", ex);
+   
       res.json(ex);
     }
   },
@@ -132,7 +132,7 @@ const userController = {
           .json({ message: "Unable to decode JWT and change password" });
       }
     } catch (ex) {
-      console.log("-----Error-----", ex);
+    
       res.json(ex);
     }
   },

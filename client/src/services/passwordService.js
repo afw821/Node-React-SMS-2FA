@@ -1,5 +1,5 @@
 import http from "./httpService";
-import { apiUrl, deployedApiUrl } from "../config.json";
+import { apiUrl, deployedUrl } from "../config.json";
 
 export function updateForgetPw(userId, token, newPassword) {
   const reqBody = {
@@ -7,10 +7,9 @@ export function updateForgetPw(userId, token, newPassword) {
     token: token,
     password: newPassword,
   };
-  console.log("request body from pw service", reqBody);
-  const result = http.put(
-    apiUrl + `/forgotPassword/${userId}`,
-    reqBody
+ 
+  const result = http.post(
+    deployedUrl + `/auth/forgotPassword/${userId}`,reqBody
   );
 
   return result;

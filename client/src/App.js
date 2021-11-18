@@ -36,7 +36,7 @@ class App extends Component {
   };
 
   handleSetValidPwToken = (validPwToken) => {
-    console.log("valid pw token from app.js", validPwToken);
+   
     this.setState({ validPwToken });
   };
 

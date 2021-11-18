@@ -1,5 +1,5 @@
 import http from "./httpService";
-import { apiUrl, deployedApiUrl } from "../config.json";
+import { apiUrl, deployedUrl } from "../config.json";
 
 export async function register(
   firstName,
@@ -20,9 +20,9 @@ export async function register(
     password,
     isAdmin,
   };
-  console.log("register", obj);
-  const { data: user } = await http.post(apiUrl + "/users", obj);
-  console.log("returned user", user);
+ 
+  const { data: user } = await http.post(deployedUrl + "/users", obj);
+
   return user;
 }
 
@@ -30,7 +30,7 @@ export async function getUserById(id) {
   const reqBody = {
     token: sessionStorage.getItem("token"),
   };
-  const user = await http.post(apiUrl + `/users/${id}`, reqBody);
+  const user = await http.post(deployedUrl + `/users/${id}`, reqBody);
 
   return user;
 }
@@ -59,7 +59,7 @@ export async function updateUser(
     isAdmin,
     token: sessionStorage.getItem("token"),
   };
-  const result = await http.put(apiUrl + `/users/${id}`, reqBody);
+  const result = await http.put(deployedUrl + `/users/${id}`, reqBody);
 
   return result;
 }

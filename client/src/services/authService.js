@@ -1,10 +1,10 @@
 import http from "./httpService";
 import jwtDecode from "jwt-decode";
-import { apiUrl, deployedApiUrl } from "../config.json";
+import { apiUrl, deployedUrl } from "../config.json";
 
 export async function login(validationCode, userId) {
   const { data: jwt } = await http.post(
-    apiUrl + `/auth/secondLevelAuth/${userId}`,
+    deployedUrl + `/auth/secondLevelAuth/${userId}`,
     {
       validationCode,
     },
@@ -25,7 +25,7 @@ export async function getSMSCode(userName, password) {
   //first level auth
 
   const { data } = await http.post(
-    apiUrl + "/auth/firstLevelAuth",
+    deployedUrl + "/auth/firstLevelAuth",
     {
       userName,
       password,
@@ -33,7 +33,7 @@ export async function getSMSCode(userName, password) {
     //{ withCredentials: true }
   );
   const { user, validPassword, token } = data;
-  console.log("data from get sms res", data);
+  
   //sessionStorage.setItem("valid_pw_token", token);
   return {
     user,
@@ -58,7 +58,7 @@ export function getTokenFromCookie() {
 
 export function decodeToken(token) {
   try {
-    console.log("jwt decode", jwtDecode(token));
+   
     return jwtDecode(token);
   } catch (ex) {
     return null;
@@ -70,8 +70,8 @@ export async function isPwResetUrlStillActive(token, userId) {
     token: token,
     userId: userId,
   };
-  const { data } = await http.post(apiUrl + "/auth/isTokenValid", reqBody);
-  console.log("is token valid service data", data);
+  const { data } = await http.post(deployedUrl + "/auth/isTokenValid", reqBody);
+ 
   return data.isTokenValid;
 }
 

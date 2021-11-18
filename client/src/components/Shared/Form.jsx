@@ -22,10 +22,8 @@ class Form extends Component {
 
   doPasswordsMatch = (password, firstPassword) => {
     if (firstPassword !== password) {
-      console.log("pw must match");
       return "Passwords must match";
     } else {
-      console.log("else");
       return "Passwords match!";
     }
   };
@@ -55,7 +53,7 @@ class Form extends Component {
 
     // phoneNumberLength is used to know when to apply our formatting for the phone number
     const phoneNoLength = phoneNumber.length;
-    console.log("Phone length", phoneNoLength);
+
     // we need to return the value with no formatting if its less then four digits
     // this is to avoid weird behavior that occurs if you  format the area code to early
     if (phoneNoLength < 4)
@@ -88,9 +86,8 @@ class Form extends Component {
     const data = { ...this.state.data };
     switch (input.name) {
       case "password":
-        console.log("Made it to password");
         const firstPassword = data.firstPassword;
-        console.log("firstpw", firstPassword);
+
         const pwErrorMessage = this.doPasswordsMatch(
           input.value,
           firstPassword
@@ -129,7 +126,6 @@ class Form extends Component {
   };
 
   handleSubmit = (e) => {
-    console.log("handle Submit");
     e.preventDefault();
     //error handling
     const errors = this.validateOnSubmit();

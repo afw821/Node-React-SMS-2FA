@@ -9,8 +9,6 @@ module.exports = function (req, res, next) {
   if (!requiresAuth) return next();
   try {
     const { token } = req.cookies;
-    console.log("--------req.cookies", req.cookies);
-    console.log("------TOKEN-------", token);
     if (!token) return status(401).send("Access Denied. No token Provided");
     const decoded = jwt.verify(token, process.env.JWT_PRIVATEKEY);
     req.user = decoded;

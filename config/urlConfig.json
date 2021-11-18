@@ -1,4 +1,4 @@
 {
   "appUrl": "http://localhost:3000",
-  "deployedAppUrl": "https://myAppName.herokuapp.com"
+  "deployedAppUrl": "https://smsauthentication2fa.herokuapp.com"
 }

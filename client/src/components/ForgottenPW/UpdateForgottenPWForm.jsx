@@ -31,8 +31,6 @@ class UpdateForgottenPWForm extends Form {
 
   doSubmit = async () => {
     const { token, userId } = this.props.match.params;
-    console.log("token----", token);
-    console.log("userId----", userId);
     try {
       this.setState({ showLoader: true });
       const { data, errors } = this.state;
@@ -43,7 +41,10 @@ class UpdateForgottenPWForm extends Form {
         data.password
       );
       if (result.complete) {
-        toast.success("Password Successfully Updated");
+        toast.success("Password Successfully Updated", {
+          autoClose: 5000,
+          closeOnClick: true,
+        });
         this.setState({
           data: {
             firstPassword: "",

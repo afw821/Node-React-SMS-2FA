@@ -16,7 +16,7 @@ const emailController = {
 
       res.send({ sent: true, message: "Message sent successfully" });
     } catch (ex) {
-      console.log("-----Error-----", ex);
+   
       res.json(ex);
     }
   },
@@ -38,19 +38,17 @@ const emailController = {
 
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
-        console.log("-------------transporter error-----------------", error);
+      
         return false;
       } else {
-        console.log(
-          "-----------------Email sent:--------------------- " + info.response
-        );
+
       }
     });
 
     return true;
   },
   renderContactHtml: function (message, name, fromEmail, subject) {
-    console.log("--------------Render Contact Email---------------");
+
     return `
       <!doctype html>
       <html>
@@ -644,7 +642,7 @@ const emailController = {
   
       if (!user)
         return res.status(400).send("No user with theat email is registered");
-      console.log("-----------user---------", user);
+   
       const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
@@ -652,7 +650,7 @@ const emailController = {
           pass: process.env.EMAIL_PASSWORD,
         },
       });
-      console.log("---------MADE IT HERE---------------")
+    
       
       const token = emailController.usePasswordHashToMakeToken(user);
       const url = emailController.getPasswordResetURL(user, token);
@@ -671,7 +669,7 @@ const emailController = {
       
       res.json({completed: true});
     } catch (ex) {
-      console.log("-----Error-----", ex);
+     
       res.json(ex);
     }
 
@@ -681,7 +679,7 @@ const emailController = {
     id: userId,
     createdAt,
   }) {
-    console.log("------------use password hash to make token--------");
+  
     const secret = passwordHash + "-" + createdAt;
     const token = jwt.sign({ userId }, secret, {
       expiresIn: 3600, // 1 hour
